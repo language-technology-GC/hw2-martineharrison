@@ -1,0 +1,26 @@
+Reflection: HW2 
+Most of the frustration I encountered within this assignment was at the installation level. 
+I’m currently using Windows, so I’m not unaccustomed to running into support issues. 
+Installing Windows Subsystem for Linux was helpful, as I was then able to install FairSeq, 
+and later JiWER (for calculating word error rate). 
+
+Prepping the data for preprocessing was fairly easy, though I did run into an error once I 
+moved on to training: my .g and .p files were of mismatched lengths. This yielded an assertion
+error when I ran fairseq-train. For two out of three of the file pairs, the .g file was one line 
+longer than the .p file; in the remaining case, the .p file was one line longer than the .g file. 
+In each of the abbreviated files, for whatever reason, the first line had gotten lopped off. 
+Because I was able to visually determine this was the only problem with the files, in the 
+interest of expediency,  I quickly went in and manually corrected them by adding the respective 
+missing line. 
+
+At this point, I ran fairseq-train, and the command appeared to run without any errors. After about 
+an hour of waiting, though, I began to question the parameters I had fed the terminal. I re-reviewed 
+the flags, and found that the issue was that I had entered the flags --encoder-layers and --decoder-layers 
+rather than --encoder-hidden-size and --decoder-hidden-size. In effect, the number of layers I was assigning 
+it was too big for it to run efficiently. Changing the flags finally allowed my model to train. 
+
+The final major issue I had was when I ran the command fairseq-generate. A predictions.txt file appeared 
+as expected, but the hypothesis output was not great. No hypothesis exceeded five phonemes in length, 
+regardless of the length of the corresponding target pronunciation. After sitting around and feeling 
+stressed out about it for a little while, I simply decided to delete all prior data and run fairseq-preprocess, 
+fairseq-train, and fairseq-generate again. This yielded much nicer, fully comprehensible hypotheses.  
